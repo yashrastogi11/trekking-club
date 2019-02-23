@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:trekking_club/about_us.dart';
 import 'package:trekking_club/benefits.dart';
 import 'package:trekking_club/contact.dart';
+import 'package:trekking_club/fingerprint.dart';
 import 'package:trekking_club/photos.dart';
 import 'package:trekking_club/rating.dart';
 
-
-void main() => runApp(MyApp());
+void main() => runApp(Authenticate());
 
 class MyApp extends StatelessWidget {
 
@@ -45,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   void initState() {
     super.initState();
 
+    
 
     animController = new AnimationController(duration: Duration(seconds: 12), vsync: this);
 
@@ -56,6 +57,9 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
       });
 
     animController.repeat();
+
+    
+    
   }
 
   @override

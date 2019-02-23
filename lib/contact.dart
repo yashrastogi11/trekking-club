@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class Contact extends StatefulWidget {
   @override
   _ContactState createState() => _ContactState();
 }
 
 class _ContactState extends State<Contact> {
-
   void _showTelephone() {
     _launch('tel:8094696587');
   }
@@ -26,13 +24,12 @@ class _ContactState extends State<Contact> {
   }
 
   void _launch(String urlString) async {
-    if(await canLaunch(urlString)) {
+    if (await canLaunch(urlString)) {
       await launch(urlString);
     } else {
       throw 'Could not launch Url';
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +45,7 @@ class _ContactState extends State<Contact> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: MediaQuery.of(context).size.height/3,
+                  height: MediaQuery.of(context).size.height / 3,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("images/7.jpg"),
@@ -74,7 +71,6 @@ class _ContactState extends State<Contact> {
           SizedBox(
             height: 60.0,
           ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -87,11 +83,9 @@ class _ContactState extends State<Contact> {
                 tooltip: "Make a Call",
                 splashColor: Colors.lightGreen[200],
               ),
-
               SizedBox(
                 width: 15.0,
               ),
-
               IconButton(
                 padding: EdgeInsets.all(20.0),
                 icon: Icon(Icons.email),
@@ -103,15 +97,12 @@ class _ContactState extends State<Contact> {
               ),
             ],
           ),
-
           SizedBox(
             height: 40.0,
           ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-
               IconButton(
                 padding: EdgeInsets.all(20.0),
                 icon: Image.asset("images/facebook.png"),
@@ -120,11 +111,9 @@ class _ContactState extends State<Contact> {
                 tooltip: "Connect on Facebook",
                 splashColor: Colors.blue[300],
               ),
-
               SizedBox(
                 width: 15.0,
               ),
-
               IconButton(
                 padding: EdgeInsets.all(20.0),
                 icon: Image.asset("images/instagram.png"),
@@ -133,13 +122,10 @@ class _ContactState extends State<Contact> {
                 tooltip: "Follow on Instagram",
                 splashColor: Colors.pink[300],
               ),
-
             ],
           ),
-
         ],
       ),
     );
   }
 }
-
