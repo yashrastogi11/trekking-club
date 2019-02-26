@@ -1,12 +1,10 @@
 import 'dart:io';
-import 'package:flare_flutter/flare_actor.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:trekking_club/main.dart';
+import 'package:trekking_club/splash_screen.dart';
 
 class Authenticate extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,9 +25,6 @@ class Fingerprint extends StatefulWidget {
 
 class _FingerprintState extends State<Fingerprint> {
   final LocalAuthentication _localAuthentication = LocalAuthentication();
-  bool _canCheckBiometric = false;
-  String _authorizedOrNot = "Not Authorized";
-  List<BiometricType> _availableBiometricTypes = List<BiometricType>();
 
   @override
   void initState() {
@@ -38,42 +33,11 @@ class _FingerprintState extends State<Fingerprint> {
     _authorizeNow();
   }
 
-  Future<void> _checkBiometric() async {
-    bool canCheckBiometric = false;
-    try {
-      canCheckBiometric = await _localAuthentication.canCheckBiometrics;
-    } on PlatformException catch (e) {
-      print(e);
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      _canCheckBiometric = canCheckBiometric;
-    });
-  }
-
-  Future<void> _getListOfBiometricTypes() async {
-    List<BiometricType> listOfBiometrics;
-
-    try {
-      listOfBiometrics = await _localAuthentication.getAvailableBiometrics();
-    } on PlatformException catch (e) {
-      print(e);
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      _availableBiometricTypes = listOfBiometrics;
-    });
-  }
-
   Future<void> _authorizeNow() async {
     bool isAuthorized = false;
     try {
       isAuthorized = await _localAuthentication.authenticateWithBiometrics(
-        localizedReason: "Please authenticate to complete your transaction",
+        localizedReason: "Please authenticate to open the app",
         useErrorDialogs: true,
         stickyAuth: true,
       );
@@ -85,16 +49,9 @@ class _FingerprintState extends State<Fingerprint> {
 
     setState(() {
       if (isAuthorized) {
-        _authorizedOrNot = "Authorized";
-        Future.delayed(const Duration(seconds: 5), () => FlareActor("images/brain,flr",
-        alignment: Alignment(-0.8, 0.0),
-        animation: "brain",
-        shouldClip: true,
-        )
-        );
-        runApp(MyApp());
-      } else {
-        _authorizedOrNot = "Not Authorized";
+//        runApp(MyApp());
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) => SplashScreen()));
       }
     });
   }
@@ -109,32 +66,13 @@ class _FingerprintState extends State<Fingerprint> {
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
-              child: Text("Cancel"),
-              onPressed: () => exit(0),
-            ),
-            SizedBox(height: 40),
-            Text("Can we check Biometric : $_canCheckBiometric"),
-            RaisedButton(
-              onPressed: _checkBiometric,
-              child: Text("Check Biometric"),
-              color: Colors.red,
-              colorBrightness: Brightness.light,
-            ),
-            Text("List Of Biometric : ${_availableBiometricTypes.toString()}"),
-            RaisedButton(
-              onPressed: _getListOfBiometricTypes,
-              child: Text("List of Biometric Types"),
-              color: Colors.red,
-              colorBrightness: Brightness.light,
-            ),
-            Text("Authorized : $_authorizedOrNot"),
-            RaisedButton(
-              onPressed: _authorizeNow,
-              child: Text("Authorize now"),
-              color: Colors.red,
-              colorBrightness: Brightness.light,
+            Container(
+              child: FlatButton(
+                child: Text("Cancel"),
+                onPressed: () => exit(0),
+              ),
             ),
           ],
         ),
@@ -142,6 +80,3 @@ class _FingerprintState extends State<Fingerprint> {
     );
   }
 }
-
-
-
